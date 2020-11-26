@@ -19,25 +19,35 @@ For Mixin-enabled mods, you need Forge coremods and those must adhere to the fol
 Here are the steps to creating a Mixin-enabled Forge mod:
 1. Clone the git
 2. Run the command: `cd ForgeMixinModTemplate`
-3. If you are using Linux or MacOS, run: `chmod ug=rwx gradlew`<br/>
-
-IDE Setup: If you are using Eclipse-JEE (fully functional):
-4. Run the following commands depending on your OS:<br/>
-5. Windows: `gradlew genEclipseRuns eclipse`<br/>
-6. Linux/MacOS: `./gradlew genEclipseRuns eclipse`<br/>
+3. If you are using Linux or MacOS, run: `chmod ug=rwx gradlew`
 <br/>
-7. Open Eclipse-JEE and open your workspace<br/>
-8. If you have the welcome page open, click 'Workbench' or 'Hide' in the top right corner.<br/>
-9. TODO<br/>
 
-IDE Setup: If you are using IntelliJ (not tested):
-4. Run the following commands depending on your OS:<br/>
-5. Windows: `gradlew genIntellijRuns`<br/>
-6. Linux/MacOS: `./gradlew genIntellijRuns`<br/>
-7. Search online for importing a Forge project in IntelliJ
+## IDE Setup: If you are using Eclipse-JEE (fully functional):
+1. Run the following commands depending on your OS:<br/>
+2. Windows: `gradlew genEclipseRuns eclipse`<br/>
+3. Linux/MacOS: `./gradlew genEclipseRuns eclipse`<br/>
+<br/>
+4. Open Eclipse-JEE and open your workspace<br/>
+5. If you have the welcome page open, click 'Workbench' or 'Hide' in the top right corner<br/>
+6. Press the keys: ALT+F
+7. Click Import
+8. Open the category 'Gradle' and select 'Existing Gradle Project'
+9. Click next until you get to the import page
+10. Click browse (next to the 'Project root directory' box)
+11. Select the mod development kit folder
+12. Click Finish
+<br/>
 
-Mod Setup:
-7. 
+## IDE Setup: If you are using IntelliJ (not tested):
+1. Run the following commands depending on your OS:<br/>
+2. Windows: `gradlew genIntellijRuns`<br/>
+3. Linux/MacOS: `./gradlew genIntellijRuns`<br/>
+4. Search online for importing a Forge project in IntelliJ
+<br/>
+
+## Mod Setup:
+1. Upcoming
+<br/><br/>
 
 # Mod template information:
 - Mod loader: **Forge**
