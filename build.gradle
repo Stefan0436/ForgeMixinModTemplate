@@ -1,0 +1,375 @@
+buildscript {
+	repositories {
+		if (!project.hasProperty("forgeGradleBinFolder")) {
+			maven { url = 'https://files.minecraftforge.net/maven' }
+		}
+		if (!project.hasProperty("mixinGradleBinFolder")) {
+			maven { url = 'https://repo.spongepowered.org/maven' }
+		}
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		if (!project.hasProperty("forgeGradleBinFolder")) {
+			classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+		} else {
+			compile files(project.getProperty("forgeGradleBinFolder").toString())
+		}
+		if (!project.hasProperty("mixinGradleBinFolder")) {
+			classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+		} else {
+			compile files(project.getProperty("mixinGradleBinFolder").toString())
+		}
+		if (project.hasProperty("mixinBinFolder")) {
+			compile files(project.getProperty("mixinBinFolder").toString())
+		}
+	}
+}
+plugins {
+	id 'java'
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+import net.minecraftforge.gradle.common.task.SignJar
+
+
+// Only edit below this line, any code above is needed for Mixin and Forge
+apply plugin: 'maven-publish'
+apply plugin: 'eclipse'
+
+
+// Your mod configuration
+def displayname = "Example Mod"                         // Display name
+def classname = "ExampleMod"                            // Main java class name
+def modid = "examplemod"                                // Mod id, lowercase letters only (once changed, you need to rename the mixins.examplemod.json to mixins.<new mod id>.json in the src/main/resources folder and also in more locations)
+def vendor = "The Example Organization"                 // Vendor name
+def credits = "John and Jane of Example.com"            // Credits (can be whatever you want, optional, make empty to disable)
+def authors = "John and Jane Doe"                       // Authors (can be whatever you want, optional, make empty to disable)
+group = "com.example.${modid}"                          // Mod group, please share with package, see: http://maven.apache.org/guides/mini/guide-naming-conventions.html
+def groupslashed = project.group.replaceAll("\\.", "/")   // Mod group, this time, slashes instead of dots
+version = "1.0"                                         // Mod version
+def mixinversion = "0.8.2"                              // Mixin target version
+def minimal_mixinversion = "0.7.10"                     // Minimum mixin version
+def MC_VER = "1.16.4"                                   // Minecraft version (note that you need to change mappings if you change this)
+def FORGE = "35.1.3"                                    // Forge version (note that you need to change mappings if you change this)
+def license = "GPL v3"                                  // License (review options at: https://choosealicense.com/, must be open source due to coremod policies)
+
+def issuetracker = "http://example.com/tracker"         // Issue tracker url (optional, remove from mods.toml to disable)
+def page = "http://example.com/"                        // Mod webpage url (optional, make empty to disable, remove from mods.toml to disable)
+def updatejson = "http://example.com/update.json"       // Mod update json url (optional, make empty to disable, remove from mods.toml to disable)
+def logofile = "${modid}.png"                           // Mod logo file (optional, make empty to disable, remove from mods.toml to disable, file must be in the src/main/resources folder)
+def description = '''
+This is a long form description of the mod. You can write whatever you want here
+
+Have some lorem ipsum.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis lacinia magna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed sagittis luctus odio eu tempus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque volutpat ligula eget lacus auctor sagittis. In hac habitasse platea dictumst. Nunc gravida elit vitae sem vehicula efficitur. Donec mattis ipsum et arcu lobortis, eleifend sagittis sem rutrum. Cras pharetra quam eget posuere fermentum. Sed id tincidunt justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+'''// Optional mod description (credits to forge, whatever is written there, make empty to disable, remove from mods.toml to disable)
+
+
+def forgeversion = "${MC_VER}-${FORGE}"         // Full forge version
+archivesBaseName = "$modid"                     // Base name of the jar file
+
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+	// The mappings can be changed at any time, and must be in the following format.
+	// snapshot_YYYYMMDD   Snapshot are built nightly.
+	// stable_#            Stables are built at the discretion of the MCP team.
+	// Use non-default mappings at your own risk. they may not always work.
+	// Simply re-run your setup task after changing the mappings to update your workspace.
+	mappings channel: 'snapshot', version: '20201028-1.16.3'
+	// makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+	// accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+	// Default run configurations.
+	// These can be tweaked, removed, or duplicated as needed.
+	runs {
+		client {
+			workingDirectory project.file('run')
+
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+
+			mods {
+				examplemod {
+					source sourceSets.main
+				}
+			}
+		}
+
+		server {
+			workingDirectory project.file('run')
+
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+
+			mods {
+				examplemod {
+					source sourceSets.main
+				}
+			}
+		}
+	}
+}
+
+dependencies {
+	// Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
+	// that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
+	// The userdev artifact is a special name and will get all sorts of transformations applied to it.
+	minecraft "net.minecraftforge:forge:${forgeversion}"
+
+	// You may put jars on which you depend on in ./libs or you may define them like so..
+	// compile "some.group:artifact:version:classifier"
+	// compile "some.group:artifact:version"
+
+	// Real examples
+	// compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+	// compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+	// The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+	// provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+	// These dependencies get remapped to your current MCP mappings
+	// deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+	// For more info...
+	// http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+	// http://www.gradle.org/docs/current/userguide/dependency_management.html
+	compile "org.spongepowered:mixin:${mixinversion}"
+	annotationProcessor("org.spongepowered:mixin:${mixinversion}:processor")
+}
+
+eclipseClasspath.dependsOn classes // Fix for eclipse file generation
+classes.dependsOn extractNatives // Make sure the natives are extracted on compile
+
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+	manifest {
+		attributes([
+			"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+			"MixinConfigs": "mixins.${modid}.json",
+			"FMLCorePluginContainsFMLMod": "true",
+			"Specification-Title": "${modid}",
+			"Specification-Vendor": "${vendor}",
+			"Specification-Version": "1", // We are version 1 of ourselves
+			"Implementation-Title": project.name,
+			"Implementation-Version": "${version}",
+			"Implementation-Vendor" :"${vendor}",
+			"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
+}
+
+// Example configuration to allow publishing using the maven-publish task
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+//publish.dependsOn('reobfJar')
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			artifact jar
+		}
+	}
+	repositories {
+		maven {
+			url "file:///${project.projectDir}/mcmodsrepo"
+		}
+	}
+}
+
+// Mixin refmap generation
+mixin {
+	add sourceSets.main, "mixins.${modid}.refmap.json"
+}
+
+// Process resources
+processResources {
+	// Make sure the task gets run if the properties change
+	inputs.property "modid", "${modid}".toString()
+	inputs.property "version", project.version
+	inputs.property "mcversion", "${MC_VER}".toString()
+	inputs.property "forgeversion", "${FORGE}".toString()
+	inputs.property "mixinver", "${mixinversion}".toString()
+	inputs.property "minmixin", "${minimal_mixinversion}".toString()
+	inputs.property "vendor", "${vendor}".toString()
+	inputs.property "authors", "${authors}".toString()
+	inputs.property "credits", "${credits}".toString()
+	inputs.property "display", "${displayname}".toString()
+	inputs.property "license", "${license}".toString()
+	inputs.property "page", "${page}".toString()
+	inputs.property "issuetracker", "${issuetracker}".toString()
+	inputs.property "updatejson", "${updatejson}".toString()
+	inputs.property "logofile", "${logofile}".toString()
+	inputs.property "description", "${description}".toString()
+	inputs.property "group", project.group
+	inputs.property "classname", "${classname}".toString()
+	inputs.property "groupslashed", "${groupslashed}".toString()
+
+	from(sourceSets.main.resources.srcDirs) {
+		expand 'modid': "${modid}".toString(), 'version': project.version, 'mcversion': "${MC_VER}".toString(), 'forgeversion': "${FORGE}".toString(), 'mixinver': "${mixinversion}".toString(), 'minmixin': "${minimal_mixinversion}".toString(), 'vendor': "${vendor}".toString(), 'authors': "${authors}".toString(), 'credits': "${credits}".toString(), 'display': "${displayname}".toString(), 'license': "${license}".toString(), 'page': "${page}".toString(), 'issuetracker': "${issuetracker}".toString(), 'updatejson': "${updatejson}".toString(), 'logofile': "${logofile}".toString(), 'description': "${description}".toString(), 'group': project.group, 'classname': "${classname}".toString(), 'groupslashed': "${groupslashed}".toString()
+	}
+}
+
+// Workaround for eclipse runs, this copies the resources and the classes to bin
+task copyToBinDefault(type: Sync, dependsOn: classes) {
+	// Check if task is up to date
+	inputs.property "modid", "${modid}".toString()
+	inputs.property "version", project.version
+	inputs.property "mcversion", "${MC_VER}".toString()
+	inputs.property "forgeversion", "${FORGE}".toString()
+	inputs.property "mixinver", "${mixinversion}".toString()
+	inputs.property "minmixin", "${minimal_mixinversion}".toString()
+	inputs.property "vendor", "${vendor}".toString()
+	inputs.property "authors", "${authors}".toString()
+	inputs.property "credits", "${credits}".toString()
+	inputs.property "display", "${displayname}".toString()
+	inputs.property "license", "${license}".toString()
+	inputs.property "page", "${page}".toString()
+	inputs.property "issuetracker", "${issuetracker}".toString()
+	inputs.property "updatejson", "${updatejson}".toString()
+	inputs.property "logofile", "${logofile}".toString()
+	inputs.property "description", "${description}".toString()
+	inputs.property "group", project.group
+	inputs.property "classname", "${classname}".toString()
+	inputs.property "groupslashed", "${groupslashed}".toString()
+
+	// Copy input/output
+	from "$buildDir/resources/main"
+	into "bin/default/resources"
+
+	from "$buildDir/classes/java/main"
+	into "bin/default"
+}
+copyToBinDefault.finalizedBy('copyToBinMain')
+// Workaround for eclipse runs, this copies the resources and the classes to bin
+task copyToBinMain(type: Sync, dependsOn: classes) {
+	// Check if task is up to date
+	inputs.property "modid", "${modid}".toString()
+	inputs.property "version", project.version
+	inputs.property "mcversion", "${MC_VER}".toString()
+	inputs.property "forgeversion", "${FORGE}".toString()
+	inputs.property "mixinver", "${mixinversion}".toString()
+	inputs.property "minmixin", "${minimal_mixinversion}".toString()
+	inputs.property "vendor", "${vendor}".toString()
+	inputs.property "authors", "${authors}".toString()
+	inputs.property "credits", "${credits}".toString()
+	inputs.property "display", "${displayname}".toString()
+	inputs.property "license", "${license}".toString()
+	inputs.property "page", "${page}".toString()
+	inputs.property "issuetracker", "${issuetracker}".toString()
+	inputs.property "updatejson", "${updatejson}".toString()
+	inputs.property "logofile", "${logofile}".toString()
+	inputs.property "description", "${description}".toString()
+	inputs.property "group", project.group
+	inputs.property "classname", "${classname}".toString()
+	inputs.property "groupslashed", "${groupslashed}".toString()
+
+	// Copy input/output
+	from "$buildDir/resources/main"
+	into "bin/main/resources"
+
+	from "$buildDir/classes/java/main"
+	into "bin/main"
+}
+classes.finalizedBy('copyToBinDefault')
+
+// Configure eclipse
+eclipse {
+	project {
+		// Set project natures
+		natures.clear()
+		natures "org.eclipse.buildship.core.gradleprojectnature", "org.eclipse.jdt.core.javanature"
+
+		// Clear old builders and add new gradle builder
+		buildCommands.clear()
+		buildCommand "LaunchConfigHandle": "<project>/builders/Gradle Builder.launch", "org.eclipse.ui.externaltools.ExternalToolBuilder"
+	}
+
+	classpath {
+		file {
+			pathVariables 'GRADLE_HOME': file("${projectDir}")
+			whenMerged { classpath ->
+				classpath.getEntries().forEach { entry ->
+					if (entry.getKind() == "src" && entry.hasProperty("output")) {
+						entry.output = null // make sure the entry won't get compiled by java and instead by gradle.
+					}
+				}
+			}
+		}
+	}
+}
+
+// Make the clean task remove the run and logs folder
+clean {
+	delete "run"
+	delete "logs"
+}
+
+// Make sure the cleanEclipse task removes the bin and settings folder (and the runs)
+cleanEclipse {
+	delete ".settings"
+	delete "bin"
+	delete fileTree("$projectDir") {
+		include '*.launch'
+	}
+}
+
+// Task to clean all files, including eclipse
+task cleanAll (type: Delete) {
+	delete ".factorypath"
+	delete "Patches"
+}
+cleanAll.dependsOn cleanEclipse
+cleanAll.finalizedBy clean
+
+// Copy the pre-configured jdt-apt config as a workaround to prevent a bug.
+task copyEclipseConfig {
+	onlyIf { return !file(".settings/org.eclipse.jdt.apt.core.prefs").exists() }
+	copy {
+		from "config presets"
+		into ".settings"
+		include "org.eclipse.jdt.apt.core.prefs"
+	}
+}
+eclipseClasspath.dependsOn copyEclipseConfig
+
+task signJar(type: SignJar, dependsOn: jar) {
+	onlyIf {
+		project.hasProperty('keyStore')
+	}
+	keyStore = project.findProperty('keyStore')
+	alias = project.findProperty('keyStoreAlias')
+	storePass = project.findProperty('keyStorePass')
+	keyPass = project.findProperty('keyStoreKeyPass')
+	inputFile = jar.archivePath
+	outputFile = jar.archivePath
+}
+build.dependsOn signJar
+
+task loadKeyInfo {
+	onlyIf { return file("keyinfo.properties").exists() }
+
+	doFirst {
+		def props = new Properties()
+		props.load(new FileReader(file("keyinfo.properties")))
+
+		props.each { key, val ->
+			project.ext.set(key, val)
+		}
+
+		if (!project.hasProperty('keyStore')) throw new GradleException("Key information file 'keyinfo.properties' does not contain a keyStore variable, unable to continue.")
+	}
+}
+signJar.dependsOn loadKeyInfo
