@@ -16,7 +16,7 @@ For Mixin-enabled mods, you need Forge coremods and those must adhere to the fol
 <br/>
 
 # Project setup
-Here are the steps to creating a Mixin-enabled Forge mod:
+## Main setup
 1. Clone the git
 2. Run the command: `cd ForgeMixinModTemplate`
 3. If you are using Linux or MacOS, run: `chmod ug=rwx gradlew`
