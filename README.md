@@ -56,9 +56,3 @@ For Mixin-enabled mods, you need Forge coremods and those must adhere to the fol
 - ForgeGradle version: 3+
 - MixinGralde version: 0.7-SNAPSHOT
 <br/><br/>
-
-# Loading class folders as ForgeGradle and MixinGradle plugins 
-If you want to load class folders use the following arguments in gradle:
-- Add the arguments -PmixinBinFolder "\<Mixin class folder path\>" to load Mixin from a class folder<br/>
-- Add the arguments -PmixinGradleBinFolder "\<MixinGradle class folder path\>" to load MixinGradle from a class folder<br/>
-- Add the arguments -PforgeGradleBinFolder "\<ForgeGradle class folder path\>" to load ForgeGradle from a class folder.
