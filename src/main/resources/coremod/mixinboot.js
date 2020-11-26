@@ -10,7 +10,7 @@ function initializeCoreMod() {
                 'type': 'CLASS',
                 'name': 'net.minecraft.util.registry.Bootstrap'
             },
-            'transformer': function(classNode) { // TODO: Another example mixin, TODO: Another example mixin (a overwrite mixin)
+            'transformer': function(classNode) {
                 print("[Mixin Bootstrap Wrapper] Hello from Mixin Bootstrap Wrapper! Loading ASMAPI and Opcodes...");
                 
                 var Opcodes = Java.type('org.objectweb.asm.Opcodes');

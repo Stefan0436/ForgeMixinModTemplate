@@ -28,6 +28,7 @@ buildscript {
 plugins {
 	id 'java'
 }
+apply plugin: 'eclipse'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 import net.minecraftforge.gradle.common.task.SignJar
@@ -35,7 +36,6 @@ import net.minecraftforge.gradle.common.task.SignJar
 
 // Only edit below this line, any code above is needed for Mixin and Forge
 apply plugin: 'maven-publish'
-apply plugin: 'eclipse'
 
 
 // Your mod configuration
