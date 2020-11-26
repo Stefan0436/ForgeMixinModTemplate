@@ -10,7 +10,7 @@ This is a simple template for forge mods with Mixin-support build-in.<br/>
 # Mod policy
 For Mixin-enabled mods, you need Forge coremods and those must adhere to the following conditions:
 - Disclose source (**mandatory**, keep it FOSS, Free Open Source Software)
-- Proper exception handling in mixins/transformers (**mandatory**, there will be an API)
+- Proper exception handling in mixins/transformers (**mandatory**)
 - Coremod in separate jar from normal mods (**mandatory**)
 - Jars must be signed before distributing (**mandatory**)<br/>
 <br/>
