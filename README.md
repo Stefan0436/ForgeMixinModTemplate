@@ -26,6 +26,7 @@ Here are the steps to creating a Mixin-enabled Forge mod:
 2. Windows: `gradlew genEclipseRuns eclipse`<br/>
 3. Linux/MacOS: `./gradlew genEclipseRuns eclipse`<br/>
 <br/>
+
 4. Open Eclipse-JEE and open your workspace<br/>
 5. If you have the welcome page open, click 'Workbench' or 'Hide' in the top right corner<br/>
 6. Press the keys: ALT+F
