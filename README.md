@@ -20,7 +20,6 @@ Here are the steps to creating a Mixin-enabled Forge mod:
 1. Clone the git
 2. Run the command: `cd ForgeMixinModTemplate`
 3. If you are using Linux or MacOS, run: `chmod ug=rwx gradlew`
-<br/>
 
 ## IDE Setup: If you are using Eclipse-JEE (fully functional):
 1. Run the following commands depending on your OS:<br/>
@@ -36,14 +35,12 @@ Here are the steps to creating a Mixin-enabled Forge mod:
 10. Click browse (next to the 'Project root directory' box)
 11. Select the mod development kit folder
 12. Click Finish
-<br/>
 
 ## IDE Setup: If you are using IntelliJ (not tested):
 1. Run the following commands depending on your OS:<br/>
 2. Windows: `gradlew genIntellijRuns`<br/>
 3. Linux/MacOS: `./gradlew genIntellijRuns`<br/>
 4. Search online for importing a Forge project in IntelliJ
-<br/>
 
 ## Mod Setup:
 1. Upcoming
