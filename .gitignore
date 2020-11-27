@@ -23,3 +23,5 @@ run
 logs
 .factorypath
 todo.txt
+download.sh
+download.bat
