@@ -5,4 +5,5 @@ git clone %url% "%outputname%"
 if not exist "%outputname%" exit
 cd %outputname% 
 del download.sh
+del download-posix.sh
 del download.bat
