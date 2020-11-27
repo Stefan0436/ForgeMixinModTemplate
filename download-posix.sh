@@ -4,5 +4,10 @@ read -r url
 echo "Output folder name:"
 read -r outputname
 git clone $url "$outputname"
-cd "$outputname" || exit
-chmod ug=rwx gradlew
+if [ -d "$outputname" ]; then
+  cd "$outputname"
+  chmod ug=rwx gradlew
+  rm "download-posix.sh"
+  rm "download.sh"
+  rm "download.bat"
+fi
