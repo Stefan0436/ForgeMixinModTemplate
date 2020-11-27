@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.Mixins;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-// Make sure the value matches the mod id.
+// Make sure the @Mod annotation value matches the mod id.
 @Mod("examplemod")
 public class ExampleMod
 {
